@@ -10,64 +10,81 @@
     </div>
   </div>
   <div class = "row">
-    <div class = "col l4">
+    <div class = "col l4 center-align">
       <form action="/scrape" method="get">
         <button type="submit" value="submit" >Scrape</button>
       </form>
     </div>
-    <div class = "col l4">
+    <div class = "col l4 center-align">
       <form action="/articles" method="get">
         <button type="submit" value="submit" >View Scraped</button>
       </form>
     </div>
-    <div class = "col l4">
+    <div class = "col l4 center-align">
       <form action="/saved" method="get">
         <button type="submit" value="submit" >View Saved</button>
       </form>
     </div>
   </div>
-  <div class = "row" id = "article list">
+  <div class = "row center-align" id = "article list">
     <div class = "col l12">
-      {{#each dbArticle}} 
-      <div class = "row">
-        <h5>{{title}}</h5>
-      </div>
-      <div class = "row">
-        <h5>{{link}}</h5>
-      </div>
-      <div class = "row">
-        <button type="submit" class= "action" id= "remove" value = {{_id}}>remove</button>
-        <button type="submit" class= "action" id= "save" value = {{_id}}>Save</button>
-      </div>
-    {{/each}}
-    {{#each dbArticleSaved}}
-      <div class = "row">
-        <div class = "col l8">
-          <div class = "row">
-            <div class = "col l8">
-              <h5>{{title}}</h5>
-            </div>
-            <div class = "col l4">
-              <div class = "row">
-                <div class = "col l12">
-                  <a href="{{link}}"><button>Link</button></a>
-                </div>
-              <div class = "row">
-                <div class = "col l12">
-                  <button type="submit" class= "action" id ="unsave" value = {{_id}}>Unsave</button>
-                </div>
+      {{#each dbArticle}}
+        <div class = "row">
+          <div class = "col l12">
+            <div class = "row">
+              <div class = "col l10">
+                <h5>{{title}}</h5>
               </div>
-              <div class = "row">
-                <div class = "col l12">
-                  <button type="submit" class= "action" id ="viewnotes" value= {{_id}}>Add Note</button>
+              <div class = "col l2">
+                <div class = "row">
+                  <div class = "col s12">
+                    <a href="{{link}}"><button>Link</button></a>
+                  </div>
+                </div>  
+                <div class = "row">
+                  <div class = "col s12">
+                    <button type="submit" class= "action" id= "save" value = {{_id}}>Save</button>
+                  </div>
                 </div>
-              </div> 
+                <div class = "row">
+                  <div class = "col s12">
+                    <button type="submit" class= "action" id= "remove" value = {{_id}}>remove</button>
+                  </div>
+                </div> 
               </div>
             </div>
           </div>
         </div>
+      {{/each}}
+      {{#each dbArticleSaved}}
+        <div class = "row">
+          <div class = "col l12">
+            <div class = "row">
+              <div class = "col l10">
+                <h5>{{title}}</h5>
+              </div>
+              <div class = "col l2">
+                <div class = "row">
+                  <div class = "col s12">
+                    <a href="{{link}}"><button>Link</button></a>
+                  </div>
+                </div>  
+                <div class = "row">
+                  <div class = "col s12">
+                    <button type="submit" class= "action" id ="unsave" value = {{_id}}>Unsave</button>
+                  </div>
+                </div>
+                <div class = "row">
+                  <div class = "col s12">
+                    <button type="submit" class= "action" id ="viewnotes" value= {{_id}}>Add Note</button>
+                  </div>
+                </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+        {{/each}}
       </div>
-    {{/each}}
     </div>
   </div>
 </div>
