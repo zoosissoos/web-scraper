@@ -1,0 +1,112 @@
+<div class = "container">
+  <div class = "row">
+    <div class = "col l12">
+      <h5>How to use:</h5>
+    </div>
+  </div>
+  <div class = "row">
+    <div class = "col l12">
+      <p>Click "Scrape" to scrape the latest MLB trader articles. You can save each article if youd like</p>
+    </div>
+  </div>
+  <div class = "row">
+    <div class = "col l4">
+      <form action="/scrape" method="get">
+        <button type="submit" value="submit" >Scrape</button>
+      </form>
+    </div>
+    <div class = "col l4">
+      <form action="/articles" method="get">
+        <button type="submit" value="submit" >View Scraped</button>
+      </form>
+    </div>
+    <div class = "col l4">
+      <form action="/saved" method="get">
+        <button type="submit" value="submit" >View Saved</button>
+      </form>
+    </div>
+  </div>
+  <div class = "row" id = "article list">
+    <div class = "col l12">
+      {{#each dbArticle}} 
+      <div class = "row">
+        <h5>{{title}}</h5>
+      </div>
+      <div class = "row">
+        <h5>{{link}}</h5>
+      </div>
+      <div class = "row">
+        <button type="submit" class= "action" id= "remove" value = {{_id}}>remove</button>
+        <button type="submit" class= "action" id= "save" value = {{_id}}>Save</button>
+      </div>
+    {{/each}}
+    {{#each dbArticleSaved}}
+      <div class = "row">
+        <div class = "col l8">
+          <div class = "row">
+            <div class = "col l8">
+              <h5>{{title}}</h5>
+            </div>
+            <div class = "col l4">
+              <div class = "row">
+                <div class = "col l12">
+                  <a href="{{link}}"><button>Link</button></a>
+                </div>
+              <div class = "row">
+                <div class = "col l12">
+                  <button type="submit" class= "action" id ="unsave" value = {{_id}}>Unsave</button>
+                </div>
+              </div>
+              <div class = "row">
+                <div class = "col l12">
+                  <button type="submit" class= "action" id ="viewnotes" value= {{_id}}>Add Note</button>
+                </div>
+              </div> 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+    </div>
+  </div>
+</div>
+
+
+<script>
+$("#save").on("click", function(e){
+  e.preventDefault();
+  $.ajax({
+    url: "/save",
+    method: "PUT",
+    data:{"id" : this.value }
+    }).then(function(data){
+      console.log(data)
+      window.location.reload()
+    })
+});
+
+$("#unsave").on("click", function(e){
+  e.preventDefault();
+  $.ajax({
+    url: "/unsave",
+    method: "PUT",
+    data:{"id" : this.value }
+    }).then(function(data){
+      console.log(data)
+      window.location.reload()
+    })
+});
+
+$("#remove").on("click", function(e){
+  e.preventDefault();
+  $.ajax({
+    url: "/remove",
+    method: "PUT",
+    data:{"id" : this.value }
+    }).then(function(data){
+      console.log(data)
+      window.location.reload()
+    })
+});
+</script>

@@ -1,0 +1,5 @@
+body,div{
+  background-image: url('./images/background.png');
+  border-color : black;
+  border-style: solid
+}
