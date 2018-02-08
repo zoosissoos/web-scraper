@@ -1,36 +1,37 @@
 <div class = "container">
   <div class = "row">
-    <div class = "col l12">
-      <h5>How to use:</h5>
+    <div class = "col l12 title">
+      <h5>Welcome.</h5>
     </div>
   </div>
   <div class = "row">
-    <div class = "col l12">
-      <p>Click "Scrape" to scrape the latest MLB trader articles. You can save each article if youd like</p>
+    <div class = "col l12 title">
+      <p>Click "Scrape" to begin. When you are ready to view documents click "View Scraped".</p>
+        <p>You may save and add comments to each article.</p>
     </div>
   </div>
   <div class = "row">
     <div class = "col l4 center-align">
       <form action="/scrape" method="get">
-        <button type="submit" value="submit" >Scrape</button>
+        <button class="waves-effect waves-light btn #616161 grey darken-2 action" type="submit" value="submit" >Scrape</button>
       </form>
     </div>
     <div class = "col l4 center-align">
       <form action="/articles" method="get">
-        <button type="submit" value="submit" >View Scraped</button>
+        <button class="waves-effect waves-light btn #616161 grey darken-2 action" type="submit" value="submit" >View Scraped</button>
       </form>
     </div>
     <div class = "col l4 center-align">
       <form action="/saved" method="get">
-        <button type="submit" value="submit" >View Saved</button>
+        <button class="waves-effect waves-light btn #616161 grey darken-2 action" type="submit" value="submit" >View Saved</button>
       </form>
     </div>
   </div>
   <div class = "row center-align" id = "article list">
     <div class = "col l12">
       {{#each dbArticle}}
-        <div class = "row">
-          <div class = "col l12">
+        <div class = "row article-wrap z-depth-2">
+          <div class = "col l12 upper">
             <div class = "row">
               <div class = "col l10">
                 <h5>{{title}}</h5>
@@ -38,17 +39,17 @@
               <div class = "col l2">
                 <div class = "row">
                   <div class = "col s12">
-                    <a href="{{link}}"><button>Link</button></a>
+                    <a href="{{link}}"><button class ="waves-effect waves-light btn light-blue darken-4 action">Link</button></a>
                   </div>
                 </div>  
                 <div class = "row">
                   <div class = "col s12">
-                    <button type="submit" class= "action" id= "save" value = {{_id}}>Save</button>
+                    <button type="submit" class= "waves-effect waves-light btn light-blue darken-4 action" id= "save" value = {{_id}}>Save</button>
                   </div>
                 </div>
                 <div class = "row">
                   <div class = "col s12">
-                    <button type="submit" class= "action" id= "remove" value = {{_id}}>remove</button>
+                    <button type="submit" class= "waves-effect waves-light btn red darken-3 action" id= "remove" value = {{_id}}>remove</button>
                   </div>
                 </div> 
               </div>
@@ -57,8 +58,8 @@
         </div>
       {{/each}}
       {{#each dbArticleSaved}}
-        <div class = "row">
-          <div class = "col l12">
+        <div class = "row article-wrap z-depth-2">
+          <div class = "col l12 upper">
             <div class = "row">
               <div class = "col l10">
                 <h5>{{title}}</h5>
@@ -66,17 +67,17 @@
               <div class = "col l2">
                 <div class = "row">
                   <div class = "col s12">
-                    <a href="{{link}}"><button>Link</button></a>
+                    <a href="{{link}}"><button class = "waves-effect waves-light btn light-blue darken-4 action">Link</button></a>
                   </div>
                 </div>  
                 <div class = "row">
                   <div class = "col s12">
-                    <button type="submit" class= "action" id ="unsave" value = {{_id}}>Unsave</button>
+                    <button type="submit" class= "waves-effect waves-light btn light-blue darken-4 action" id ="unsave" value = {{_id}}>Unsave</button>
                   </div>
                 </div>
                 <div class = "row">
                   <div class = "col s12">
-                    <button type="submit" class= "action" id ="viewnotes" value= {{_id}}>Add Note</button>
+                    <button type="submit" class= "waves-effect waves-light btn light-blue darken-4 action modal-trigger" id ="viewnotes" href="#modal1" value= {{_id}}>Notes</button>
                   </div>
                 </div> 
               </div>
@@ -87,10 +88,51 @@
       </div>
     </div>
   </div>
-</div>
 
+
+{{!-- modal  --}}
+<div id="modal1" class="modal large">
+  <div class="modal-content">
+    <h4>Notes</h4>
+    <hr>
+    <div id = "attachnote">
+
+    </div>
+  </div>
+    <div class = "model-content">
+      <div class="row">
+        <form class="col s6">
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea id="titletextarea" class="materialize-textarea"></textarea>
+              <label for="titletextarea">Title</label>
+            </div>
+          </div>
+        </form>
+        <form class="col s6">
+          <div class="row">
+            <div class="input-field col s12">
+              <textarea id="notetextarea" class="materialize-textarea"></textarea>
+              <label for="notetextarea">Note</label>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="waves-effect waves-green btn-flat" id = "addnote">Add Note</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+    </div>
+  </div>
 
 <script>
+
+$(document).ready(function(){
+  // the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
+  $('.modal').modal();
+});
+
+//saves article
 $("#save").on("click", function(e){
   e.preventDefault();
   $.ajax({
@@ -103,6 +145,7 @@ $("#save").on("click", function(e){
     })
 });
 
+//unsaves article
 $("#unsave").on("click", function(e){
   e.preventDefault();
   $.ajax({
@@ -115,6 +158,7 @@ $("#unsave").on("click", function(e){
     })
 });
 
+//removes article from scrape database
 $("#remove").on("click", function(e){
   e.preventDefault();
   $.ajax({
@@ -126,4 +170,46 @@ $("#remove").on("click", function(e){
       window.location.reload()
     })
 });
+
+//views notes
+$("#viewnotes").on("click", function(e){
+  e.preventDefault();
+  let thisId = $(this).attr("value");
+  console.log(thisId)
+  $.ajax({
+    url: `/article/notes/${thisId}`,
+    method: "GET",
+    }).then(function(data){
+      $("#attachnote").empty();
+
+      console.log(data)
+      let noteTitle = data.note.title;
+      let noteBody = data.note.body;
+      
+      let noteApp = `<h5>${noteTitle}</h5> <p>${noteBody}</p> <hr>`
+      $("#attachnote").append(noteApp);
+
+      $("#addnote").attr('value', thisId)
+      $('#modal1').modal('open');
+  })
+});
+
+//adds note
+$('#addnote').on("click", function() {
+  let thisId = $(this).attr("value");
+  $.ajax({
+    method: "POST",
+    url: `/articles/${thisId}`,
+    data: {
+      title: $("#titletextarea").val(),
+      body: $("#notetextarea").val()
+    }
+  })
+    .then(function(data) {
+      console.log(data);
+    });
+  $("#titletextarea").val("");
+  $("#notetextarea").val("");
+});
+
 </script>

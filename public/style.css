@@ -1,3 +1,16 @@
-body,div{
+body{
+  background-color: #002144;
+}
+
+.article-wrap{
   background-image: url('./images/background.png');
+  padding: 10px;
+}
+.upper{
+  padding-top: 25px !important;
+}
+
+.title{
+  text-align: center;
+  color: cornsilk;
 }

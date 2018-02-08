@@ -22,16 +22,6 @@ let ArticleSchema = new Schema({
   }
 });
 
-ArticleSchema.methods.saveArticle = function() {
-  this.isSaved = true;
-  return this.isSaved;
-};
-
-ArticleSchema.methods.unsaveArticle = function() {
-  this.isSaved = false;
-  return this.isSaved;
-};
-
 const Article = mongoose.model("Article", ArticleSchema);
 
 module.exports = Article;
