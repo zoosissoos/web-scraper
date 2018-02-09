@@ -5,18 +5,17 @@ const db = require('../models/');
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/");
-
+//greeting when visiting site
 router.get('/', function (req, res) {
   res.render('greeting');
 });
 
+//provides dashboard
 router.get('/dashboard', function (req, res) {
   res.render('dashboard');
 });
 
-
+//scrapes
 router.get("/scrape", function(req, res) {
   axios.get("http://www.mlbtraderumors.com").then(function(response) {
     const $ = cheerio.load(response.data);
@@ -58,6 +57,7 @@ router.get("/articles", function(req, res) {
     });
 });
 
+//saves article
 router.put("/save",function(req,res){
   let query = {_id : req.body.id}
   console.log(query)
@@ -67,7 +67,6 @@ router.put("/save",function(req,res){
     res.end();
   })
   .catch(function(err) {
-    // If an error occurred, send it to the client
     res.json(err);
   });
 })
@@ -82,7 +81,6 @@ router.put("/remove",function(req,res){
     res.end();
   })
   .catch(function(err) {
-    // If an error occurred, send it to the client
     res.json(err);
   });
 });
@@ -92,11 +90,10 @@ router.get("/saved", function(req, res) {
   db.Article.find({isSaved:true})
     .then(function(dbArticleSaved) {
       console.log(dbArticleSaved)
-      // If we were able to successfully find Articles, send them back to the client
+      //renders the article
       res.render('dashboard',{"dbArticleSaved" : dbArticleSaved});
     })
     .catch(function(err) {
-      // If an error occurred, send it to the client
       res.json(err);
     });
 });
@@ -110,24 +107,21 @@ router.put("/unsave",function(req,res){
     res.end();
   })
   .catch(function(err) {
-    // If an error occurred, send it to the client
     res.json(err);
   });
 });
 
 router.get("/article/notes/:id", function(req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
   let query = { _id: req.params.id }
   db.Article.findOne(query)
     // ..and populate all of the notes associated with it
     .populate({path: "note", model: 'Note'})
     .then(function(dbArticle) {
-      // If we were able to successfully find an Article with the given id, send it back to the client
+      //sends article with notes to client
       console.log(`THIS IS THE RETURNED: ${dbArticle}`)
       res.json(dbArticle);
     })
     .catch(function(err) {
-      // If an error occurred, send it to the client
       res.json(err);
     });
 });
@@ -137,21 +131,17 @@ router.post("/articles/:id", function(req, res) {
   db.Note.create(req.body)
     .then(function(dbNote) {
       console.log(dbNote)
-      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
       return db.Article.findOneAndUpdate({ _id: req.params.id }, { $push: {"note": dbNote._id} }, {new:true, safe: true, upsert: true,overwrite: false});
     })
     .then(function(data) {
-      // If we were able to successfully update an Article, send it back to the client
       res.json(data);
     })
     .catch(function(err) {
-      // If an error occurred, send it to the client
       res.json(err);
     });
 });
 
+//deletes note
 router.put("/delete",function(req,res){
   let query = {_id : req.body.id}
   console.log(query)
@@ -160,7 +150,6 @@ router.put("/delete",function(req,res){
     res.end();
   })
   .catch(function(err) {
-    // If an error occurred, send it to the client
     res.json(err);
   });
 });
