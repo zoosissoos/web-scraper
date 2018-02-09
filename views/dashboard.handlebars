@@ -120,8 +120,8 @@
       </div>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="waves-effect waves-green btn-flat" id = "addnote">Add Note</a>
-      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+      <a class="waves-effect waves-green btn-flat" id = "addnote">Add Note</a>
+      <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat" id = "closemodal">Close</a>
     </div>
   </div>
 
@@ -180,17 +180,16 @@ $("#viewnotes").on("click", function(e){
     url: `/article/notes/${thisId}`,
     method: "GET",
     }).then(function(data){
-      $("#attachnote").empty();
+    $("#attachnote").empty();
 
-      console.log(data)
-      let noteTitle = data.note.title;
-      let noteBody = data.note.body;
-      
-      let noteApp = `<h5>${noteTitle}</h5> <p>${noteBody}</p> <hr>`
+    console.log(data.note)
+    data.note.forEach((n) =>{
+      let noteApp = `<div class = "row"><div class = "col s10"><h5>${n.title}</h5> <p>${n.body}</p><hr></div><div class = "col s1"><button type="submit" class= "waves-effect waves-light btn red darken-3 action" id= "delete" value = "${n._id}"" >X</button></div></div>`
       $("#attachnote").append(noteApp);
+    });
 
-      $("#addnote").attr('value', thisId)
-      $('#modal1').modal('open');
+    $("#addnote").attr('value', thisId)
+    $('#modal1').modal('open');
   })
 });
 
@@ -210,6 +209,26 @@ $('#addnote').on("click", function() {
     });
   $("#titletextarea").val("");
   $("#notetextarea").val("");
+});
+
+//deletes note
+$("#delete").on("click", function(e){
+  e.preventDefault();
+  $.ajax({
+    url: "/delete",
+    method: "PUT",
+    data:{"id" : this.value }
+    }).then(function(data){
+      console.log(data)
+    });
+});
+
+
+//emptys notes in modal then closes
+$("#closemodal").on("click", function(e){
+  e.preventDefault()
+  $("#attachnote").empty();
+  $('#modal1').modal('close');
 });
 
 </script>

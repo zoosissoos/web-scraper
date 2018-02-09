@@ -5,6 +5,7 @@ body{
 .article-wrap{
   background-image: url('./images/background.png');
   padding: 10px;
+  border-radius: 10px;
 }
 .upper{
   padding-top: 25px !important;
